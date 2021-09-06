@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Debounce and Throttle</title>
+  </head>
+  <body>
+    <input id="debounce" type="text" placeholder="debounce" />
+
+    <button type="button" id="throttle">throttle</button>
+
+    <script>
+      const debounce = (func, wait) => {
+        let timeout;
+
+        return (...args) => {
+          if (timeout) clearTimeout(timeout);
+
+          timeout = setTimeout(() => func(...args), wait);
+        };
+      };
+
+      document.getElementById("debounce").addEventListener(
+        "keydown",
+        debounce((e) => {
+          console.log(e.target.value);
+        }, 1000)
+      );
+
+      const throttle = (func, wait) => {
+        let lastTime = 0;
+
+        return (...args) => {
+          const now = Date.now();
+
+          if (now - lastTime >= wait) {
+            func(...args);
+
+            lastTime = now;
+          }
+        };
+      };
+
+      document.getElementById("throttle").addEventListener(
+        "click",
+        throttle(() => {
+          console.log("clicked");
+        }, 2000)
+      );
+    </script>
+  </body>
+</html>
